@@ -11,6 +11,11 @@ import java.util.Set;
 public class Runner {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
+
+		if(args.length==0) {
+			System.out.println("usage: java -jar propcomparator.java file1 file2 ... filen");
+			System.exit(1);
+		}
 		
 		Map<String, Properties> allProps = loadProperties(args);
 		Set<MissingProperty> errors = new SuperComparator(allProps).compare();
