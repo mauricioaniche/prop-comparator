@@ -39,7 +39,7 @@ public class SuperComparator {
 		Properties prop2 = allProps.get(propName2);
 
 		for(Object key : prop1.keySet()) {
-			if(!prop2.contains(key)) errors.add(new MissingProperty(propName2, (String) key));
+			if(!prop2.containsKey(key)) errors.add(new MissingProperty(propName1, propName2, (String) key));
 		}
 		
 		return errors;

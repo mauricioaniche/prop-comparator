@@ -37,7 +37,7 @@ public class SuperComparatorTest {
 		Set<MissingProperty> errors = new SuperComparator(allProps).compare();
 		
 		Assert.assertFalse(errors.isEmpty());
-		Assert.assertTrue(errors.contains(new MissingProperty("file2.properties", "k3")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file1.properties", "file2.properties", "k3")));
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class SuperComparatorTest {
 		Set<MissingProperty> errors = new SuperComparator(allProps).compare();
 		
 		Assert.assertFalse(errors.isEmpty());
-		Assert.assertTrue(errors.contains(new MissingProperty("file1.properties", "k3")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file2.properties", "file1.properties", "k3")));
 	}
 
 	@Test
@@ -61,20 +61,21 @@ public class SuperComparatorTest {
 		
 		Set<MissingProperty> errors = new SuperComparator(allProps).compare();
 		
-		Assert.assertEquals(7, errors.size());
-		Assert.assertTrue(errors.contains(new MissingProperty("file1.properties", "k3")));
-		Assert.assertTrue(errors.contains(new MissingProperty("file1.properties", "k7")));
-		Assert.assertTrue(errors.contains(new MissingProperty("file1.properties", "k4")));
-		Assert.assertTrue(errors.contains(new MissingProperty("file2.properties", "k7")));
-		Assert.assertTrue(errors.contains(new MissingProperty("file2.properties", "k4")));
-		Assert.assertTrue(errors.contains(new MissingProperty("file3.properties", "k3")));
-		Assert.assertTrue(errors.contains(new MissingProperty("file3.properties", "k1")));
+		Assert.assertEquals(8, errors.size());
+		Assert.assertTrue(errors.contains(new MissingProperty("file2.properties", "file1.properties", "k3")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file3.properties", "file1.properties", "k7")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file3.properties", "file1.properties", "k4")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file3.properties", "file2.properties", "k7")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file3.properties", "file2.properties", "k4")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file2.properties", "file3.properties", "k3")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file1.properties", "file3.properties", "k1")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file2.properties", "file3.properties", "k1")));
 	}
 
 	private Properties newProps(String... keysAndValues) {
 		Properties prop = new Properties();
 		for(String value : keysAndValues) {
-			prop.put(value, value);
+			prop.put(value, value+"x");
 		}
 		return prop;
 	}

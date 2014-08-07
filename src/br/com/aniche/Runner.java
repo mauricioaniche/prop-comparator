@@ -12,6 +12,10 @@ public class Runner {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 
+		args = new String[] {
+				"/Users/mauricioaniche/dev/workspace/gnarus/src/main/musicdot/acceptance.properties", 
+				"/Users/mauricioaniche/dev/workspace/gnarus/src/main/musicdot/production.properties" 
+				};
 		if(args.length==0) {
 			System.out.println("usage: java -jar propcomparator.java file1 file2 ... filen");
 			System.exit(1);
@@ -24,7 +28,7 @@ public class Runner {
 		
 		System.out.println("Some differences were found:");
 		for(MissingProperty error : errors) {
-			System.out.println("- Missing " + error.getProperty() + " in " + error.getFile());
+			System.out.println("- Missing " + error.getProperty() + " in " + error.getMissingFile() + " (exists in " + error.getOriginalFile() + ")");
 		}
 		System.exit(1);
 		
