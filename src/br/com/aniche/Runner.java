@@ -12,10 +12,6 @@ public class Runner {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 
-		args = new String[] {
-				"/Users/mauricioaniche/dev/workspace/gnarus/src/main/musicdot/acceptance.properties", 
-				"/Users/mauricioaniche/dev/workspace/gnarus/src/main/musicdot/production.properties" 
-				};
 		if(args.length==0) {
 			System.out.println("usage: java -jar propcomparator.java file1 file2 ... filen");
 			System.exit(1);
