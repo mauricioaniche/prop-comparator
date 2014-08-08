@@ -13,7 +13,12 @@ public class Runner {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 
 		if(args.length<2) {
-			System.out.println("usage: java -jar propcomparator.java files=f1.properties,f2.properties default=f1.properties ignore=key1,key2");
+			System.out.println(
+					"usage: java -jar propcomparator.java " + 
+					"files=f1.properties,f2.properties " + 
+					"default=f1.properties " + 
+					"ignore=key1,key2"
+			);
 			System.exit(1);
 		}
 		
