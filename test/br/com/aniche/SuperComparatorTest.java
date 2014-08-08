@@ -19,7 +19,7 @@ public class SuperComparatorTest {
 	public void setUp() {
 		allProps = new HashMap<String, Properties>();
 		defaultProps = new Properties();
-		cmp = new SuperComparator(allProps, defaultProps);
+		cmp = new SuperComparator(allProps, defaultProps, new String[] { "ignorekey1", "ignorekey2" });
 	}
 	
 	@Test
@@ -86,6 +86,24 @@ public class SuperComparatorTest {
 		
 		defaultProps.put("k7", "k7x");
 
+		Set<MissingProperty> errors = cmp.compare();
+		
+		Assert.assertEquals(6, errors.size());
+		Assert.assertTrue(errors.contains(new MissingProperty("file2.properties", "file1.properties", "k3")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file3.properties", "file1.properties", "k4")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file3.properties", "file2.properties", "k4")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file2.properties", "file3.properties", "k3")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file1.properties", "file3.properties", "k1")));
+		Assert.assertTrue(errors.contains(new MissingProperty("file2.properties", "file3.properties", "k1")));
+	}
+	
+	@Test
+	public void should_ignore_keys_that_needs_to_be_ignored() {
+		
+		allProps.put("file1.properties", newProps("k1", "k2"));
+		allProps.put("file2.properties", newProps("k1", "k2", "k3"));
+		allProps.put("file3.properties", newProps("k4", "k2", "ignorekey1.k7"));
+		
 		Set<MissingProperty> errors = cmp.compare();
 		
 		Assert.assertEquals(6, errors.size());

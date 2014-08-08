@@ -11,10 +11,12 @@ public class SuperComparator {
 
 	private Map<String, Properties> allProps;
 	private Properties defaultProps;
+	private String[] ignoreKeys;
 
-	public SuperComparator(Map<String, Properties> allProps, Properties defaultProps) {
+	public SuperComparator(Map<String, Properties> allProps, Properties defaultProps, String[] ignoreKeys) {
 		this.allProps = allProps;
 		this.defaultProps = defaultProps;
+		this.ignoreKeys = ignoreKeys;
 	}
 	
 	public Set<MissingProperty> compare() {
@@ -40,12 +42,23 @@ public class SuperComparator {
 		Properties prop1 = allProps.get(propName1);
 		Properties prop2 = allProps.get(propName2);
 
-		for(Object key : prop1.keySet()) {
+		for(Object obj : prop1.keySet()) {
+			String key = (String) obj;
+			
+			if(shouldBeIgnored(key)) continue;
+			
 			if(!prop2.containsKey(key) && !defaultProps.containsKey(key)) {
-				errors.add(new MissingProperty(propName1, propName2, (String) key));
+				errors.add(new MissingProperty(propName1, propName2, key));
 			}
 		}
 		
 		return errors;
+	}
+
+	private boolean shouldBeIgnored(String key) {
+		for(String ignoreKey : ignoreKeys) {
+			if(key.startsWith(ignoreKey)) return true;
+		}
+		return false;
 	}
 }
