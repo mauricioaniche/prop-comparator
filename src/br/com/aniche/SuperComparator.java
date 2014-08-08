@@ -10,9 +10,11 @@ import java.util.Set;
 public class SuperComparator {
 
 	private Map<String, Properties> allProps;
+	private Properties defaultProps;
 
-	public SuperComparator(Map<String, Properties> allProps) {
+	public SuperComparator(Map<String, Properties> allProps, Properties defaultProps) {
 		this.allProps = allProps;
+		this.defaultProps = defaultProps;
 	}
 	
 	public Set<MissingProperty> compare() {
@@ -39,7 +41,9 @@ public class SuperComparator {
 		Properties prop2 = allProps.get(propName2);
 
 		for(Object key : prop1.keySet()) {
-			if(!prop2.containsKey(key)) errors.add(new MissingProperty(propName1, propName2, (String) key));
+			if(!prop2.containsKey(key) && !defaultProps.containsKey(key)) {
+				errors.add(new MissingProperty(propName1, propName2, (String) key));
+			}
 		}
 		
 		return errors;

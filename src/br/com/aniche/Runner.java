@@ -17,8 +17,14 @@ public class Runner {
 			System.exit(1);
 		}
 		
+		Properties defaultProp = new Properties();
 		Map<String, Properties> allProps = loadProperties(args);
-		Set<MissingProperty> errors = new SuperComparator(allProps).compare();
+		
+		if(args[1].startsWith("default=")) {
+			defaultProp = readFile(args[0].replace("default=", ""));
+		}
+		
+		Set<MissingProperty> errors = new SuperComparator(allProps, defaultProp).compare();
 
 		if(errors.isEmpty()) System.exit(0);
 		
@@ -34,11 +40,18 @@ public class Runner {
 			throws IOException, FileNotFoundException {
 		Map<String, Properties> allProps = new HashMap<String, Properties>();
 		for(int i = 0; i < args.length; i++) {
-			Properties prop = new Properties();
-			prop.load(new FileInputStream(args[i]));
+			if(args[1].startsWith("default=")) continue;
 			
+			Properties prop = readFile(args[i]);
 			allProps.put(args[i], prop);
 		}
 		return allProps;
+	}
+
+	private static Properties readFile(String file)
+			throws IOException, FileNotFoundException {
+		Properties prop = new Properties();
+		prop.load(new FileInputStream(file));
+		return prop;
 	}
 }
