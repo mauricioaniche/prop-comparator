@@ -57,11 +57,11 @@ public class Runner {
 	private static Map<String, Properties> loadAllProperties(String file)
 			throws IOException, FileNotFoundException {
 		
-		String[] args = file.replace("files=", "").split(",");
+		String[] files = file.replace("files=", "").split(",");
 		Map<String, Properties> allProps = new HashMap<String, Properties>();
-		for(int i = 0; i < args.length; i++) {
-			Properties prop = readFile(args[i]);
-			allProps.put(args[i], prop);
+		for(int i = 0; i < files.length; i++) {
+			Properties prop = readFile(files[i]);
+			allProps.put(files[i], prop);
 		}
 		return allProps;
 	}
